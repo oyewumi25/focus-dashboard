@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import { openNotification } from "../../functions/notification";
 
 
 class ratingInactif extends Component {

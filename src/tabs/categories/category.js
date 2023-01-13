@@ -1,10 +1,11 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown, Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-
+import Category_new from "../../forms/category_new";
 
 class Category extends Component {
   state = {
@@ -155,10 +156,27 @@ class Category extends Component {
         ...getColumnSearchProps("status")
       },
 
+      {
+        title: "Actions",
+        dataIndex: "Actions",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
+      },
 
       
 
     ];
+
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
@@ -167,6 +185,10 @@ class Category extends Component {
           // onBack={() => null}
           title="Gestion des admins"
           subTitle="Liste des admins"
+          tags={""}
+          extra={
+            <Category_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>

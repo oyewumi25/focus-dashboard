@@ -5,8 +5,9 @@ import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 
+  
 
-class sousCategory1 extends Component {
+class CardActive extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -15,6 +16,7 @@ class sousCategory1 extends Component {
   };
 
   
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -138,42 +140,19 @@ class sousCategory1 extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Liste de souhait",
+        dataIndex: "Liste de souhait",
+        ...getColumnSearchProps("Liste de souhait")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        title: "carte",
+        dataIndex: "carte",
+        ...getColumnSearchProps("carte")
       },
 
 
-      {
-        title: "Email",
-        dataIndex: "Email",
-        ...getColumnSearchProps("Email")
-      },
-
-     
-      {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
-      },
-
-      {
-        title: "Password",
-        dataIndex: "Password",
-        ...getColumnSearchProps("password")
-      },
-
+      
     ];
 
     return (
@@ -181,8 +160,8 @@ class sousCategory1 extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des admins"
-          subTitle="Liste des admins"
+          title="Gestion des vendeurs"
+          subTitle="Liste des reponses"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -201,4 +180,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(sousCategory1);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(CardActive);

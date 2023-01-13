@@ -1,10 +1,11 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-
+import CommandeAchévée_new from "../../forms/commandeAchévée_new";
 
 
 class CommandeAchévée extends Component {
@@ -199,9 +200,25 @@ class CommandeAchévée extends Component {
         ...getColumnSearchProps("tracking"),
         
       },
+      {
+        title: "",
+        dataIndex: "",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
+      },
 
     
     ];
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
@@ -210,6 +227,10 @@ class CommandeAchévée extends Component {
           // onBack={() => null}
           title="Gestion des commandes"
           subTitle="Liste des commandes"
+          tags={""}
+          extra={
+            <CommandeAchévée_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>

@@ -1,12 +1,14 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import ArticleActif_new from "../../forms/countryActif_new";
 
 
-class articleActif extends Component {
+class ArticleActif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -185,8 +187,24 @@ class articleActif extends Component {
         dataIndex: "discount",
         ...getColumnSearchProps("discount")
       },
+      {
+        title: "",
+        dataIndex: "",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
+      },
     
     ];
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
@@ -195,6 +213,9 @@ class articleActif extends Component {
           // onBack={() => null}
           title="Gestion des articles"
           subTitle="Liste des articles"
+          extra={
+            <ArticleActif_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -213,4 +234,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(articleActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(ArticleActif);

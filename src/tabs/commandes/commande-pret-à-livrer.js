@@ -2,14 +2,12 @@ import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import {base_url, getAllVendorActif} from "../../constants/url"
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-import { openNotification } from "../../functions/notification";
 
-  
 
-class vendeurActif extends Component {
+
+class CommandeALivrer extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -17,21 +15,7 @@ class vendeurActif extends Component {
     data: []
   };
 
-  componentDidMount() {
-    this.fetchData();
-  }
   
-  fetchData = async () => {
-    await Axios.get(base_url + getAllVendorActif)
-      .then((res) => {
-        console.log(res.data.vendeurs);
-        this.setState({ data: res.data.vendeurs});
-      })
-      .catch((err) => {
-        return openNotification("error", err?.response?.data?.message);
-      });
-  };
-
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -155,62 +139,67 @@ class vendeurActif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Articles",
+        dataIndex: "articles",
+        ...getColumnSearchProps("articles")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        title: "User-details",
+        dataIndex: "user-details",
+        ...getColumnSearchProps("userdetails")
       },
 
 
       {
-        title: "Email",
-        dataIndex: "email",
-        ...getColumnSearchProps("country")
+        title: "Delivery-adress",
+        dataIndex: "Delivery-adress",
+        ...getColumnSearchProps("Delivery-adress")
+      },
+
+
+      {
+        title: "Billing-adress",
+        dataIndex: "billing-adress",
+        ...getColumnSearchProps("billing-adress"),
         
       },
 
-     
       {
-        title: "Country",
-        dataIndex: "country",
-        ...getColumnSearchProps("country")
-      },
-
-      {
-        title: "Registre",
-        dataIndex: "registre",
-        ...getColumnSearchProps("registre")
-      },
-
-      {
-        title: "Withdrawed",
-        dataIndex: "withdrawed",
-        ...getColumnSearchProps("wthdrawed")
-      },
-
-      {
-        title: "Logo",
-        dataIndex: "logo",
-       
-      },
-
-      {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
-      },
-
+        title: "Montant",
+        dataIndex: "montant",
+        ...getColumnSearchProps("montant"),
         
+      },
+
+      {
+        title: "Payment",
+        dataIndex: "payment",
+        ...getColumnSearchProps("payment"),
+        
+      },
+
+      {
+        title: "Delivery-price",
+        dataIndex: "delivery price",
+        ...getColumnSearchProps("delivery price"),
+        
+      },
+
+      {
+        title: "Status",
+        dataIndex: "status",
+        ...getColumnSearchProps("status"),
+        
+      },
+      
+      {
+        title: "Tracking",
+        dataIndex: "tracking",
+        ...getColumnSearchProps("tracking"),
+        
+      },
+
     
     ];
 
@@ -219,8 +208,8 @@ class vendeurActif extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des vendeurs"
-          subTitle="Liste des reponses"
+          title="Gestion des commandes"
+          subTitle="Liste des commandes"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -239,4 +228,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(vendeurActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(CommandeALivrer);

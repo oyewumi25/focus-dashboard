@@ -1,45 +1,26 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu  } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import {base_url, getAllVendorActif} from "../../constants/url"
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import CountryActif_new from "../../forms/countryActif_new";
+import { base_url } from "../../constants/url";
 import { openNotification } from "../../functions/notification";
 
-  
 
-class vendeurActif extends Component {
+
+class CountryActif extends Component {
   state = {
+    load: true,
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
-  };
 
-  componentDidMount() {
-    this.fetchData();
-  }
+  };
   
-  fetchData = async () => {
-    await Axios.get(base_url + getAllVendorActif)
-      .then((res) => {
-        console.log(res.data.vendeurs);
-        this.setState({ data: res.data.vendeurs});
-      })
-      .catch((err) => {
-        return openNotification("error", err?.response?.data?.message);
-      });
-  };
-
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex
-    });
-  };
-
   handleReset = (clearFilters) => {
     clearFilters();
     this.setState({
@@ -58,15 +39,15 @@ class vendeurActif extends Component {
         clearFilters
       }) => (
         <div style={{ padding: 8 }}>
-          <Input
+        <Input
             ref={searchInput}
             placeholder={`Search ${dataIndex}`}
             value={selectedKeys[0]}
             onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
             }
             onPressEnter={() =>
-              this.handleSearch(selectedKeys, confirm, dataIndex)
+            this.handleSearch(selectedKeys, confirm, dataIndex)
             }
             style={{
               marginBottom: 8,
@@ -155,72 +136,53 @@ class vendeurActif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "City",
+        dataIndex: "city",
+        ...getColumnSearchProps("city")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        title: "Compagnie Registre Picture",
+        dataIndex: "compagnie registre picture",
+        ...getColumnSearchProps("compagnie registre picture")
       },
 
-
-      {
-        title: "Email",
-        dataIndex: "email",
-        ...getColumnSearchProps("country")
-        
-      },
-
-     
-      {
-        title: "Country",
-        dataIndex: "country",
-        ...getColumnSearchProps("country")
-      },
-
-      {
-        title: "Registre",
-        dataIndex: "registre",
-        ...getColumnSearchProps("registre")
-      },
 
       {
         title: "Withdrawed",
         dataIndex: "withdrawed",
-        ...getColumnSearchProps("wthdrawed")
-      },
-
-      {
-        title: "Logo",
-        dataIndex: "logo",
        
       },
-
       {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
+        title: "Actions",
+        dataIndex: "Actions",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
       },
-
-        
     
     ];
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des vendeurs"
-          subTitle="Liste des reponses"
+          title="Gestion des pays"
+          subTitle="Liste des pays"
+          tags={""}
+          extra={
+            <CountryActif_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -239,4 +201,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(vendeurActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(CountryActif);

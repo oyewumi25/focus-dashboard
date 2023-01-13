@@ -2,11 +2,13 @@ import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import {base_url, getAllUserActif} from "../../constants/url"
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import { openNotification } from "../../functions/notification";
 
 
-class paysActif extends Component {
+class userActif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -14,7 +16,30 @@ class paysActif extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllUserActif)
+      .then((res) => {
+        console.log(res.data.utilisateurs);
+        this.setState({ data: res.data.utilisateur});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
+
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex
+    });
+  };
+
   handleReset = (clearFilters) => {
     clearFilters();
     this.setState({
@@ -130,23 +155,53 @@ class paysActif extends Component {
       },
 
       {
-        title: "City",
-        dataIndex: "city",
-        ...getColumnSearchProps("city")
+        title: "Nom",
+        dataIndex: "firstname",
+        ...getColumnSearchProps("firstname")
       },
 
       {
-        title: "Compagnie Registre Picture",
-        dataIndex: "compagnie registre picture",
-        ...getColumnSearchProps("compagnie registre picture")
+        title: "Prénom",
+        dataIndex: "lastname",
+        ...getColumnSearchProps("lastname")
       },
 
 
       {
-        title: "Withdrawed",
-        dataIndex: "withdrawed",
-       
+        title: "Email",
+        dataIndex: "Email",
+        ...getColumnSearchProps("email")
       },
+
+
+      {
+        title: "Numéro de téléphone",
+        dataIndex: "number",
+        ...getColumnSearchProps("number"),
+        
+        
+      },
+
+      {
+        title: "Password",
+        dataIndex: "password",
+        ...getColumnSearchProps("password"),
+        
+        
+      },
+      {
+        title: "Adress",
+        dataIndex: "adress",
+        ...getColumnSearchProps("adress"),
+        
+      },
+   
+        
+      
+
+      
+      
+
     
     ];
 
@@ -155,8 +210,8 @@ class paysActif extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des pays"
-          subTitle="Liste des pays"
+          title="Gestion des utilisateurs"
+          subTitle="Liste des utilisateurs"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -175,4 +230,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(paysActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(userActif);

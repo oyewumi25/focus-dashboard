@@ -1,12 +1,16 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import {Link} from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import PaysInactif_new from "../../forms/countryInactif_new ";
+import { openNotification } from "../../functions/notification";
 
 
-class sousCategorie2 extends Component {
+
+class PaysInactif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -15,14 +19,6 @@ class sousCategorie2 extends Component {
   };
 
   
-  handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    this.setState({
-      searchText: selectedKeys[0],
-      searchedColumn: dataIndex
-    });
-  };
-
   handleReset = (clearFilters) => {
     clearFilters();
     this.setState({
@@ -138,51 +134,53 @@ class sousCategorie2 extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "City",
+        dataIndex: "city",
+        ...getColumnSearchProps("city")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        title: "Compagnie Registre Picture",
+        dataIndex: "compagnie registre picture",
+        ...getColumnSearchProps("compagnie registre picture")
       },
 
 
       {
-        title: "Email",
-        dataIndex: "Email",
-        ...getColumnSearchProps("Email")
+        title: "Withdrawed",
+        dataIndex: "withdrawed",
+       
       },
-
-     
       {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
+        title: "",
+        dataIndex: "",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
       },
-
-      {
-        title: "Password",
-        dataIndex: "Password",
-        ...getColumnSearchProps("password")
-      },
-
+    
     ];
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des admins"
-          subTitle="Liste des admins"
+          title="Gestion des pays"
+          subTitle="Liste des pays"
+          tags={""}
+          extra={
+            <PaysInactif_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -201,4 +199,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(sousCategorie2);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(PaysInactif);

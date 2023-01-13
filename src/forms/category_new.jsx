@@ -17,11 +17,13 @@ import { openNotification } from "../functions/notification";
 import { base_url } from "../constants/url";
 import Axios from "axios";
 
-class Jury_new extends Component {
+class category extends Component {
   state = {
     visible: false,
     fullname: "",
-    email: "",
+   code_indicatif: "",
+    city:"",
+    social:"",
     load: false
   };
 
@@ -40,16 +42,19 @@ class Jury_new extends Component {
     e.preventDefault();
     this.setState({ load: true });
 
-    const { fullname, email } = this.state;
+    const { fullname,code_indicatif,city,social } = this.state;
 
     const data = {
       fullname: fullname.toLowerCase(),
-      email: email,
+      code_indicatif: code_indicatif,
+      city:city,
+      social:social
     };
 
     if (
       data.fullname.length === 0 ||
-      data.email.length < 8
+      data.code_indicatif.length < 8 || data.city.length < 4
+      || data.social.length < 2
     ) {
       this.setState({ load: false });
       return openNotification(
@@ -60,7 +65,7 @@ class Jury_new extends Component {
 
     await Axios.post(base_url + "/jury/create-jury",{
         fullname:  fullname.toLowerCase(),
-        email: email.toLowerCase()
+        code_indicatif: code_indicatif.toLowerCase()
     }).then(res=>{
         return setTimeout(() => window.location.reload(), 1000);
     }).catch((err) => {
@@ -86,14 +91,14 @@ class Jury_new extends Component {
   };
 
   render() {
-    const { fullname, email, load } = this.state;
+    const { fullname, code_indicatif,city,social, load } = this.state;
     return (
       <>
         <Button type="primary" onClick={this.showDrawer}>
-          <PlusOutlined /> Ajouter un juré
+          <PlusOutlined /> Ajouter une categorie
         </Button>
         <Drawer
-          title="Ajout de juré"
+          title="Ajout de pays"
           width={720}
           onClose={this.onClose}
           visible={this.state.visible}
@@ -131,7 +136,7 @@ class Jury_new extends Component {
               <Col span={12}>
                 <Form.Item
                   name="fullname"
-                  label="Nom Complet"
+                  label="Nom du pays"
                   rules={[
                     {
                       required: true,
@@ -141,16 +146,36 @@ class Jury_new extends Component {
                 >
                   <Input
                     name="fullname"
-                    placeholder="Veuillez entrer le nom complet"
+                    placeholder="Veuillez entrer le nom du pays"
                     onChange={this.handleChange}
                     value={fullname}
                   />
-                </Form.Item>
+                 
+                </Form.Item>  
               </Col>
+
+            <Col span={12}>
+            <Form.Item label="code indicatif">
+        <Select
+         placeholder="selectionnez le code de votre pays"
+         name ="code indicatif"
+        >  
+        <Select.Option value="demo">+225</Select.Option>
+        <Select.Option value="demo">+226</Select.Option>
+        <Select.Option value="demo">+234</Select.Option>
+        <Select.Option value="demo">+238</Select.Option>
+        <Select.Option value="demo">+225</Select.Option>
+        <Select.Option value="demo">+225</Select.Option>
+        <Select.Option value="demo">+225</Select.Option>
+        </Select>
+      </Form.Item>
+              </Col>
+
+
               <Col span={12}>
                 <Form.Item
-                  name="email"
-                  label="email"
+                  name="code indicatif"
+                  label="code indicatif"
                   rules={[
                     {
                       required: true,
@@ -159,13 +184,74 @@ class Jury_new extends Component {
                   ]}
                 >
                   <Input
-                    name="email"
-                    placeholder="email"
+                    name="code indicatif"
+                    placeholder="code indicatif"
                     onChange={this.handleChange}
-                    value={email}
+                    value={code_indicatif}
+                  />
+                  
+                </Form.Item>
+              </Col>
+              
+              <Col span={12}>
+                <Form.Item
+                  name="Nom de la cité"
+                  label="Nom de la cité"
+                  rules={[
+                    {
+                      required: true,
+                      role: "Veuillez entrer le nom de la cite"
+                    }
+                  ]}
+                >
+                  <Input
+                    name=" Nom de la cite"
+                    placeholder="Veuillez entrer le nom de la cité"
+                    onChange={this.handleChange}
+                    value={city}
                   />
                 </Form.Item>
               </Col>
+
+              <Col span={12}>
+                <Form.Item
+                  name="Social"
+                  label="Social"
+                  rules={[
+                    {
+                      required: true,
+                      role: ""
+                    }
+                  ]}
+                >
+                  <Input
+                    name=" Social"
+                    placeholder="Social"
+                    onChange={this.handleChange}
+                    value={social}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="Termes et vie privée"
+                  label="Termes et vie privée"
+                  rules={[
+                    {
+                      required: true,
+                      role: ""
+                    }
+                  ]}
+                >
+                  <Input
+                    name="Termes et vie privée"
+                    placeholder="Termes et vie privée"
+                    onChange={this.handleChange}
+                    value={city}
+                  />
+                </Form.Item>
+              </Col>
+              
             </Row>
           </Form>
         </Drawer>
@@ -174,4 +260,4 @@ class Jury_new extends Component {
   }
 }
 
-export default Jury_new;
+export default category;

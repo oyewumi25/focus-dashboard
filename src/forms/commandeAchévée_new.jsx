@@ -17,11 +17,12 @@ import { openNotification } from "../functions/notification";
 import { base_url } from "../constants/url";
 import Axios from "axios";
 
-class Candidate_new extends Component {
+class commandeAchévée_new extends Component {
   state = {
     visible: false,
     fullname: "",
-  
+    color: "",
+    city:"",
     load: false
   };
 
@@ -40,16 +41,17 @@ class Candidate_new extends Component {
     e.preventDefault();
     this.setState({ load: true });
 
-    const { fullname,  } = this.state;
+    const { fullname, email,city } = this.state;
 
     const data = {
       fullname: fullname.toLowerCase(),
-   
+      email: email,
+      city:city
     };
 
     if (
-      data.fullname.length === 0 
-     
+      data.fullname.length === 0 ||
+      data.email.length < 8 || data.city.length < 30
     ) {
       this.setState({ load: false });
       return openNotification(
@@ -58,8 +60,9 @@ class Candidate_new extends Component {
       );
     }
 
-    await Axios.post(base_url + "/candidate/create-candidate",{
-        fullname:  fullname.toLowerCase()
+    await Axios.post(base_url + "/jury/create-jury",{
+        fullname:  fullname.toLowerCase(),
+        email: email.toLowerCase()
     }).then(res=>{
         return setTimeout(() => window.location.reload(), 1000);
     }).catch((err) => {
@@ -85,14 +88,14 @@ class Candidate_new extends Component {
   };
 
   render() {
-    const {fullname,  load} = this.state;
+    const { fullname, email,city, load } = this.state;
     return (
       <>
         <Button type="primary" onClick={this.showDrawer}>
-          <PlusOutlined /> Ajouter un candidat
+          <PlusOutlined /> Ajouter une commande
         </Button>
         <Drawer
-          title="Ajout de candidat"
+          title="Ajout d'un article"
           width={720}
           onClose={this.onClose}
           visible={this.state.visible}
@@ -130,7 +133,7 @@ class Candidate_new extends Component {
               <Col span={12}>
                 <Form.Item
                   name="fullname"
-                  label="Nom Complet"
+                  label="Nom du pays"
                   rules={[
                     {
                       required: true,
@@ -138,17 +141,53 @@ class Candidate_new extends Component {
                     }
                   ]}
                 >
-
                   <Input
                     name="fullname"
-                    placeholder="Veuillez entrer le nom complet"
+                    placeholder="Veuillez entrer le nom du pays"
                     onChange={this.handleChange}
                     value={fullname}
                   />
                 </Form.Item>
               </Col>
-            
-          </Row>
+              <Col span={12}>
+                <Form.Item
+                  name="email"
+                  label="email"
+                  rules={[
+                    {
+                      required: true,
+                      role: "Veuillez entrer l'email"
+                    }
+                  ]}
+                >
+                  <Input
+                    name="email"
+                    placeholder="email"
+                    onChange={this.handleChange}
+                    value={email}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="Nom de la cité"
+                  label="Nom de la cité"
+                  rules={[
+                    {
+                      required: true,
+                      role: "Veuillez entrer le nom de la cite"
+                    }
+                  ]}
+                >
+                  <Input
+                    name=" Nom de la cite"
+                    placeholder="Veuillez entrer le nom de la cité"
+                    onChange={this.handleChange}
+                    value={city}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
           </Form>
         </Drawer>
       </>
@@ -156,4 +195,4 @@ class Candidate_new extends Component {
   }
 }
 
-export default Candidate_new;
+export default commandeAchévée_new ;

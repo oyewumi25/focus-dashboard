@@ -6,7 +6,8 @@ import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 
 
-class userActif extends Component {
+
+class commandePretALivrer extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -14,7 +15,7 @@ class userActif extends Component {
     data: []
   };
 
-
+  
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -138,52 +139,66 @@ class userActif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Articles",
+        dataIndex: "articles",
+        ...getColumnSearchProps("articles")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
-      },
-
-
-      {
-        title: "Email",
-        dataIndex: "Email",
-        ...getColumnSearchProps("email")
+        title: "User-details",
+        dataIndex: "user-details",
+        ...getColumnSearchProps("userdetails")
       },
 
 
       {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        
+        title: "Delivery-adress",
+        dataIndex: "Delivery-adress",
+        ...getColumnSearchProps("Delivery-adress")
+      },
+
+
+      {
+        title: "Billing-adress",
+        dataIndex: "billing-adress",
+        ...getColumnSearchProps("billing-adress"),
         
       },
 
       {
-        title: "Password",
-        dataIndex: "password",
-        ...getColumnSearchProps("password"),
-        
+        title: "Montant",
+        dataIndex: "montant",
+        ...getColumnSearchProps("montant"),
         
       },
+
       {
-        title: "Adress",
-        dataIndex: "adress",
-        ...getColumnSearchProps("adress"),
+        title: "Payment",
+        dataIndex: "payment",
+        ...getColumnSearchProps("payment"),
         
       },
-   
+
+      {
+        title: "Delivery-price",
+        dataIndex: "delivery price",
+        ...getColumnSearchProps("delivery price"),
         
+      },
+
+      {
+        title: "Status",
+        dataIndex: "status",
+        ...getColumnSearchProps("status"),
+        
+      },
       
-
-      
-      
+      {
+        title: "Tracking",
+        dataIndex: "tracking",
+        ...getColumnSearchProps("tracking"),
+        
+      },
 
     
     ];
@@ -193,8 +208,8 @@ class userActif extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des utilisateurs"
-          subTitle="Liste des utilisateurs"
+          title="Gestion des commandes"
+          subTitle="Liste des commandes"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -213,4 +228,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(userActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(commandePretALivrer);

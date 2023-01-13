@@ -1,12 +1,13 @@
 import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
+import {base_url, getAllUserInactif} from "../../constants/url"
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import { openNotification } from "../../functions/notification";
 
-
-class livreurActif extends Component {
+class userInactif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -14,7 +15,21 @@ class livreurActif extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllUserInactif)
+      .then((res) => {
+        console.log(res.data.utilisateurs);
+        this.setState({ data: res.data.utilisateurs});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -152,20 +167,8 @@ class livreurActif extends Component {
 
       {
         title: "Email",
-        dataIndex: "email",
+        dataIndex: "Email",
         ...getColumnSearchProps("email")
-      },
-
-      {
-        title: "Picture",
-        dataIndex: "picture",
-        
-      },
-
-      {
-        title: "Position",
-        dataIndex: "position",
-       
       },
 
 
@@ -173,18 +176,30 @@ class livreurActif extends Component {
         title: "Numéro de téléphone",
         dataIndex: "number",
         ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
+        
+        
       },
 
       {
-        title: "Status",
-        dataIndex: "status",
-       
+        title: "Password",
+        dataIndex: "password",
+        ...getColumnSearchProps("password"),
+        
+        
       },
+      {
+        title: "Adress",
+        dataIndex: "adress",
+        ...getColumnSearchProps("adress"),
+        
+      },
+   
+        
+      
+
+      
+      
+
     
     ];
 
@@ -193,8 +208,8 @@ class livreurActif extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des livreurs"
-          subTitle="Liste des livreurs"
+          title="Gestion des utilisateurs"
+          subTitle="Liste des utilisateurs"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -213,4 +228,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(livreurActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(userInactif);

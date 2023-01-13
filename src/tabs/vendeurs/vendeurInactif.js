@@ -2,8 +2,10 @@ import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import {base_url, getAllVendorInactif} from "../../constants/url"
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import { openNotification } from "../../functions/notification";
 
 
 class vendeurInactif extends Component {
@@ -14,7 +16,20 @@ class vendeurInactif extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllVendorInactif)
+      .then((res) => {
+        console.log(res.data.vendeurs);
+        this.setState({ data: res.data.vendeurs});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();

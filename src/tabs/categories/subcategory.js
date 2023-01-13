@@ -1,15 +1,13 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import {base_url, getAllVendorActif} from "../../constants/url"
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-import { openNotification } from "../../functions/notification";
+import Sub_Category_new from "../../forms/sub_category";
 
-  
-
-class vendeurActif extends Component {
+class Sub_Category extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -17,21 +15,7 @@ class vendeurActif extends Component {
     data: []
   };
 
-  componentDidMount() {
-    this.fetchData();
-  }
   
-  fetchData = async () => {
-    await Axios.get(base_url + getAllVendorActif)
-      .then((res) => {
-        console.log(res.data.vendeurs);
-        this.setState({ data: res.data.vendeurs});
-      })
-      .catch((err) => {
-        return openNotification("error", err?.response?.data?.message);
-      });
-  };
-
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -169,36 +153,11 @@ class vendeurActif extends Component {
 
       {
         title: "Email",
-        dataIndex: "email",
-        ...getColumnSearchProps("country")
-        
+        dataIndex: "Email",
+        ...getColumnSearchProps("Email")
       },
 
      
-      {
-        title: "Country",
-        dataIndex: "country",
-        ...getColumnSearchProps("country")
-      },
-
-      {
-        title: "Registre",
-        dataIndex: "registre",
-        ...getColumnSearchProps("registre")
-      },
-
-      {
-        title: "Withdrawed",
-        dataIndex: "withdrawed",
-        ...getColumnSearchProps("wthdrawed")
-      },
-
-      {
-        title: "Logo",
-        dataIndex: "logo",
-       
-      },
-
       {
         title: "Numéro de téléphone",
         dataIndex: "number",
@@ -210,17 +169,42 @@ class vendeurActif extends Component {
         )
       },
 
-        
-    
+      {
+        title: "Password",
+        dataIndex: "Password",
+        ...getColumnSearchProps("password")
+      },
+      {
+        title: "Actions",
+        dataIndex: "Actions",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
+      },
     ];
+
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+
+       );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des vendeurs"
-          subTitle="Liste des reponses"
+          title="Gestion des admins"
+          subTitle="Liste des admins"
+          tags={""}
+          extra={
+            <Sub_Category_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -239,4 +223,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(vendeurActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(Sub_Category);
