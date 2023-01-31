@@ -4,16 +4,30 @@ import React, { Component } from "react";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import {base_url, getAllDelivermansInactifs} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
-
-class livreurInactif extends Component {
+class delivermanInactif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
-
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllDelivermansInactifs)
+      .then((res) => {
+        console.log(res.data.livreur);
+        this.setState({ data: res.data.livreur});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -213,4 +227,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(livreurInactif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(delivermanInactif);

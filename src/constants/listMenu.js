@@ -1,86 +1,162 @@
 import {UserSwitchOutlined,UserOutlined,UsergroupDeleteOutlined,ShoppingCartOutlined,AuditOutlined,
-    TableOutlined,StarOutlined,ShoppingOutlined,RadarChartOutlined} from "@ant-design/icons"
+    StarOutlined,ShoppingOutlined,RadarChartOutlined} from "@ant-design/icons"
 
-import subCategory from "../tabs/categories/subcategory"
-import SubSubCategory from "../tabs/categories/sub-sub-category"
-import Category from "../tabs/categories/category"
-import userActif from "../tabs/user/userActif"
-import userInactif from "../tabs/user/userInactif"
-import commandeAchévée from "../tabs/commandes/commandeAchévée"
-import commandeInachévée from "../tabs/commandes/commandeInachévée"
-import delivermanActif from "../tabs/deliverman/delivermanActif"
-import delivermanInactif from "../tabs/deliverman/delivermanInactif"
+import sousCategorie1 from "../tabs/categories/subcategory"
+import SousCategorie2 from "../tabs/categories/sub-sub-category"
+import Categorie from "../tabs/categories/category"
+
+
+import utilisateurActif from "../tabs/users/userActif"
+import utilisateurInactif from "../tabs/users/userInactif"
+
+import commandeAceptée from "../tabs/commandes/commandeAceptée"
+import commandeDispatchée from "../tabs/commandes/commandeDispatchée"
+
+import livreurActif from "../tabs/deliverman/delivermanActif"
+import livreurInactif from "../tabs/deliverman/delivermanInactif"
+
 import paysActif from "../tabs/country/countryActif"
 import paysInactif from "../tabs/country/countryInactif"
-import vendeurActif from "../tabs/vendeurs/vendeurActif"
-import vendeurInactif from "../tabs/vendeurs/vendeurInactif"
+
+import vendeurActif from "../tabs/vendors/vendorActif"
+import vendeurInactif from "../tabs/vendors/vendorInactif"
+
 import articleActif from "../tabs/articles/articleActif"
 import articleInactif from "../tabs/articles/articleInactif"
-import ratingActif from "../tabs/rating/ratingActif"
-import ratingInactif from "../tabs/rating/ratingInactif"
-import adminActif from "../tabs/admin/adminActif"
-import adminInactif from "../tabs/admin/adminInactif"
+
+
+
+import Rating from "../tabs/rating"
+
+import adminActif from "../tabs/admins/adminActif"
+import adminInactif from "../tabs/admins/adminInactif"
+
 import commandeALivrer from "../tabs/commandes/commande-pret-à-livrer"
 import commandeEnAttente from "../tabs/commandes/commande-en-attente"
 import commandePretALivrer from "../tabs/commandes/commande-pret-à-livrer"
-import carteActive from "../tabs/card/cardActive"
-import carteInactive from "../tabs/card/cardInactive"
+import commandeAnnulées from "../tabs/commandes/commandeAnnulées"
 
+import Panier from "../tabs/panier"
 
+import categorieActive from "../tabs/categories/categorieActive"
+import categorieInactive from "../tabs/categories/categorieInactive "
+import souscategorieActive from "../tabs/categories/sub-category-active"
+import souscategorieInactive from "../tabs/categories/sub-category-inactive "
+import soussouscategorieActive from "../tabs/categories/sub-sub-categorie-active"
+import soussouscategorieInactive from "../tabs/categories/sub-sub-categorie-inactive"
+
+import Permission from "../tabs/permission"
+
+import role from "../tabs/role"
 
 const listMenu = [
 
     
     {
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"user-Actif",
-        path:"/main/user-Actif",
-        component: userActif,
-       
-    },
-    {   
-        icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"carte-Active",
-        path:"/main/carte-Active",
-        component: carteActive,
+        label:"utilisateur-Actif",
+        path:"/main/utilisateur-Actif",
+        component: utilisateurActif,
        
     },
 
     {   
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"carte-Inactive",
-        path:"/main/carte-Inactive",
-        component: carteInactive,
+        label:"panier",
+        path:"/main/panier",
+        component: Panier,
        
     },
 
     {   
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"user-inactif",
-        path:"/main/user-inactif",
-        component: userInactif,
+        label:"utilisateur-inactif",
+        path:"/main/utilisateur-inactif",
+        component: utilisateurInactif,
        
     },
 
     {   
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"sub-category",
-        path:"/main/sub-category",
-        component:subCategory
+        label:"permission",
+        path:"/main/permission",
+        component: Permission,  
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"role",
+        path:"/main/role",
+        component: role,  
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"sous-categorie1",
+        path:"/main/sous-categorie1",
+        component:sousCategorie1
        
     },
     {   
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"category",
-        path:"/main/category",
-        component:Category
+        label:"sous-categorie-active",
+        path:"/main/sous-categorie-active",
+        component:souscategorieActive
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"sous-sous-categorie-active",
+        path:"/main/sous-sous-categorie-active",
+        component:soussouscategorieActive
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"sous-sous-categorie-inactive",
+        path:"/main/sous-sous-categorie-inactive",
+        component:soussouscategorieInactive
        
     },
     {   
         icon: <UserOutlined  style= {{fontSize:20}}/>,
-        label:"sub-sub-category",
-        path:"/main/sub-sub-category",
-        component: SubSubCategory
+        label:"sous-categorie-inactive",
+        path:"/main/sous-categorie-inactive",
+        component:souscategorieInactive
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"categorie",
+        path:"/main/categorie",
+        component:Categorie
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"categorie-active",
+        path:"/main/categorie-active",
+        component:categorieActive
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"categorie-inactive",
+        path:"/main/categorie-inactive",
+        component:categorieInactive
+       
+    },
+
+    {   
+        icon: <UserOutlined  style= {{fontSize:20}}/>,
+        label:"sous-categorie2",
+        path:"/main/sous-categorie2",
+        component: SousCategorie2
        
     },
     
@@ -91,29 +167,35 @@ const listMenu = [
         component: adminActif,
        
     },
-   
+
+    {   
+        icon: <UserSwitchOutlined style= {{fontSize:20}}/>,
+        label:"admin-Inactif",
+        path:"/main/admin-Inactif",
+        component: adminInactif,
+       
+    },
+
     {   
         icon: <AuditOutlined style= {{fontSize:20}}/>, 
-        label:"deliverman-actif",
-        path:"/main/deliverman-actif",
-        component: delivermanActif,
+        label:"livreur-actif",
+        path:"/main/livreur-actif",
+        component: livreurActif,
        
     },
     {   
         icon: <AuditOutlined style= {{fontSize:20}}/>, 
-        label:"deliverman-inactif",
-        path:"/main/deliverman-inactif",
-        component: delivermanInactif,
+        label:"livreur-inactif",
+        path:"/main/livreur-inactif",
+        component: livreurInactif,
        
     },
     
-   
-
     {   
         icon: <ShoppingCartOutlined style= {{fontSize:20}}/>, 
-        label:"commandes-achévée",
-        path:"/main/commandes-achévée",
-        component: commandeAchévée,  
+        label:"commandes-aceptée",
+        path:"/main/commandes-aceptée",
+        component: commandeAceptée,  
     },
     {   
         icon: <ShoppingCartOutlined style= {{fontSize:20}}/>, 
@@ -136,13 +218,19 @@ const listMenu = [
 
     {   
         icon: <ShoppingCartOutlined style= {{fontSize:20}}/>, 
-        label:"commandes-inachévée",
-        path:"/main/commandes-inachévée",
-        component: commandeInachévée,
+        label:"commandes-dispatchée",
+        path:"/main/commandes-dispatchée",
+        component: commandeDispatchée,
        
     },
     
-    
+    {   
+        icon: <ShoppingCartOutlined style= {{fontSize:20}}/>, 
+        label:"commandes-annulées",
+        path:"/main/commandes-annulées",
+        component: commandeAnnulées,
+       
+    },
      
     {   
         icon: <ShoppingOutlined  style= {{fontSize:20}}/>,
@@ -179,24 +267,16 @@ const listMenu = [
 
     {   
         icon: <StarOutlined  style= {{fontSize:20}}/>, 
-        label:"rating-Actif",
-        path:"/main/rating-Actif",
-        component: ratingActif,
+        label:"rating",
+        path:"/main/rating",
+        component: Rating,
        
     },
-    {   
-        icon: <StarOutlined  style= {{fontSize:20}}/>, 
-        label:"rating-Inactif",
-        path:"/main/rating-Inactif",
-        component: ratingInactif,
-       
-    },
-
-  
+    
     {
         icon: <RadarChartOutlined  style= {{fontSize:20}} />,
-        label:"vendeurs-Actif",
-        path:"/main/vendeurs-Actif",
+        label:"vendeur-Actif",
+        path:"/main/vendeur-Actif",
         component: vendeurActif
     },
     {

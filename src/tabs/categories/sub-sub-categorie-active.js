@@ -1,37 +1,36 @@
-import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space,Dropdown, Menu } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import {base_url, getAllUserActif} from "../../constants/url"
+import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import Category_new from "../../forms/category_new";
+import { base_url,getAllSubSubCategoriesActifs} from "../../constants/url"
 import { openNotification } from "../../functions/notification";
 
-
-class userActif extends Component {
+class subsubcategoryActive extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
-
   componentDidMount() {
     this.fetchData();
   }
   
   fetchData = async () => {
-    await Axios.get(base_url + getAllUserActif)
-      .then((res) => {
-        console.log(res.data.utilisateurs);
-        this.setState({ data: res.data.utilisateur});
+    await Axios.get(base_url + getAllSubSubCategoriesActifs)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
       })
       .catch((err) => {
-        return openNotification("error", err?.response?.data?.message);
+      return openNotification("error", err?.response?.data?.message);
       });
   };
-
-
+  
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -155,63 +154,56 @@ class userActif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Name",
+        dataIndex: "name",
+        ...getColumnSearchProps("name")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
-      },
-
-
-      {
-        title: "Email",
-        dataIndex: "Email",
-        ...getColumnSearchProps("email")
-      },
-
-
-      {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        
-        
+        title: "Picture",
+        dataIndex: "picture",
+        ...getColumnSearchProps("picture")
       },
 
       {
-        title: "Password",
-        dataIndex: "password",
-        ...getColumnSearchProps("password"),
-        
-        
+        title: "Status",
+        dataIndex: "status",
+        ...getColumnSearchProps("status")
       },
+
       {
-        title: "Adress",
-        dataIndex: "adress",
-        ...getColumnSearchProps("adress"),
-        
+        title: "Actions",
+        dataIndex: "Actions",
+        render: (text, record) => (
+          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
+            <Button>Options</Button>
+          </Dropdown>
+        ),
       },
-   
-        
+
       
 
-      
-      
-
-    
     ];
+
+    const MenuButton = (record) => (
+      <Menu>
+        <Menu.Item>
+          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des utilisateurs"
-          subTitle="Liste des utilisateurs"
+          title="Gestion des admins"
+          subTitle="Liste des admins"
+          tags={""}
+          extra={
+            <Category_new/>
+          }
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -230,4 +222,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(userActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(subsubcategoryActive);

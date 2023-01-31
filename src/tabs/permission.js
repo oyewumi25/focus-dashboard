@@ -1,22 +1,37 @@
-import { Table, PageHeader, Tag, Button, Input, Space,Dropdown, Menu } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
+import { base_url,getAllpermissions} from "../constants/url"
+import { openNotification } from "../functions/notification";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-import Category_new from "../../forms/category_new";
 
 
 
-class Category extends Component {
+class Permission extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
+
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllpermissions)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+     })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };
+
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -141,56 +156,35 @@ class Category extends Component {
       },
 
       {
-        title: "Name",
+        title: "Nom",
         dataIndex: "name",
-        ...getColumnSearchProps("name")
+        ...getColumnSearchProps("name"),
+        render: (text) => (
+          <Tag color="orange">
+            <b>{text}</b>
+          </Tag>
+        )
       },
 
       {
-        title: "Picture",
-        dataIndex: "picture",
-        ...getColumnSearchProps("picture")
+        title: "role",
+        dataIndex: "role_id",
+        ...getColumnSearchProps("role_id"),
+        render: (text) => (
+          <Tag color="green">
+            <b>{text}</b>
+          </Tag>
+        )
       },
-
-      {
-        title: "Status",
-        dataIndex: "status",
-        ...getColumnSearchProps("status")
-      },
-
-      {
-        title: "Actions",
-        dataIndex: "Actions",
-        render: (text, record) => (
-          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
-            <Button>Options</Button>
-          </Dropdown>
-        ),
-      },
-
-      
-
     ];
-
-    const MenuButton = (record) => (
-      <Menu>
-        <Menu.Item>
-          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
-        </Menu.Item>
-      </Menu>
-    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des admins"
-          subTitle="Liste des admins"
-          tags={""}
-          extra={
-            <Category_new/>
-          }
+          title="Gestion des utilisateurs"
+          subTitle="Liste des utilisateurs"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -209,4 +203,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(Category);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(Permission);

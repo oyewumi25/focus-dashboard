@@ -1,22 +1,38 @@
-import { Table, PageHeader, Tag, Button, Input, Space,Dropdown, Menu } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
-import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-import Category_new from "../../forms/category_new";
+import {base_url, getTrackingOrders} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
 
 
-class Category extends Component {
+
+
+class CommandeInachévées extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
+
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getTrackingOrders)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };  
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -141,56 +157,77 @@ class Category extends Component {
       },
 
       {
-        title: "Name",
-        dataIndex: "name",
-        ...getColumnSearchProps("name")
+        title: "Articles",
+        dataIndex: "articles",
+        ...getColumnSearchProps("articles")
       },
 
       {
-        title: "Picture",
-        dataIndex: "picture",
-        ...getColumnSearchProps("picture")
+        title: "User-details",
+        dataIndex: "user-details",
+        ...getColumnSearchProps("userdetails")
+      },
+
+
+      {
+        title: "Delivery-adress",
+        dataIndex: "Delivery-adress",
+        ...getColumnSearchProps("Delivery-adress")
+      },
+
+
+      {
+        title: "Billing-adress",
+        dataIndex: "billing-adress",
+        ...getColumnSearchProps("billing-adress"),
+        
+      },
+
+      {
+        title: "Montant",
+        dataIndex: "montant",
+        ...getColumnSearchProps("montant"),
+        
+      },
+
+      {
+        title: "Payment",
+        dataIndex: "payment",
+        ...getColumnSearchProps("payment"),
+        
+      },
+
+      {
+        title: "Delivery-price",
+        dataIndex: "delivery price",
+        ...getColumnSearchProps("delivery price"),
+        
       },
 
       {
         title: "Status",
         dataIndex: "status",
-        ...getColumnSearchProps("status")
+        ...getColumnSearchProps("status"),
+        
       },
-
-      {
-        title: "Actions",
-        dataIndex: "Actions",
-        render: (text, record) => (
-          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
-            <Button>Options</Button>
-          </Dropdown>
-        ),
-      },
-
       
+      {
+        title: "Tracking",
+        dataIndex: "tracking",
+        ...getColumnSearchProps("tracking"),
+        
+      },
 
+    
     ];
-
-    const MenuButton = (record) => (
-      <Menu>
-        <Menu.Item>
-          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
-        </Menu.Item>
-      </Menu>
-    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des admins"
-          subTitle="Liste des admins"
-          tags={""}
-          extra={
-            <Category_new/>
-          }
+          title="Gestion des commandes"
+          subTitle="Liste des commandes"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -209,4 +246,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(Category);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(CommandeInachévées);

@@ -160,29 +160,10 @@ class countryActif_new extends Component {
                 </Form.Item>  
               </Col>
 
-            <Col span={12}>
-            <Form.Item label="code indicatif">
-        <Select 
-        name ="code indicatif" 
-        placeholder="selectionnez le code de votre pays"
-        
-        >
-          <Input 
-          onChange={this.handleChange}
-          value={code_indicatif}
-          /> 
-        <Select.Option value="demo">+225</Select.Option>
-        <Select.Option value="demo">+226</Select.Option>
-        <Select.Option value="demo">+234</Select.Option>
-        <Select.Option value="demo">+238</Select.Option>
-        <Select.Option value="demo">+225</Select.Option>
-        <Select.Option value="demo">+225</Select.Option>
-        <Select.Option value="demo">+225</Select.Option>
-        </Select>
-      </Form.Item>
-              </Col>
+                
 
 
+          
               <Col span={12}>
                 <Form.Item
                   name="contact"

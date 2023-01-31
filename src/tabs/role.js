@@ -2,18 +2,35 @@ import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
+import { base_url,getAllroles} from "../constants/url";
+import { openNotification } from "../functions/notification";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 
 
 
-class CommandeInachévées extends Component {
+class Role extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
+
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllroles)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+};
 
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -139,68 +156,26 @@ class CommandeInachévées extends Component {
       },
 
       {
-        title: "Articles",
-        dataIndex: "articles",
-        ...getColumnSearchProps("articles")
+        title: "Nom",
+        dataIndex: "name",
+        ...getColumnSearchProps("name"),
+        render: (text) => (
+          <Tag color="orange">
+            <b>{text}</b>
+          </Tag>
+        )
       },
 
       {
-        title: "User-details",
-        dataIndex: "user-details",
-        ...getColumnSearchProps("userdetails")
+        title: "list",
+        dataIndex: "list",
+        ...getColumnSearchProps("list"),
+        render: (text) => (
+          <Tag color="green">
+            <b>{text}</b>
+          </Tag>
+        )
       },
-
-
-      {
-        title: "Delivery-adress",
-        dataIndex: "Delivery-adress",
-        ...getColumnSearchProps("Delivery-adress")
-      },
-
-
-      {
-        title: "Billing-adress",
-        dataIndex: "billing-adress",
-        ...getColumnSearchProps("billing-adress"),
-        
-      },
-
-      {
-        title: "Montant",
-        dataIndex: "montant",
-        ...getColumnSearchProps("montant"),
-        
-      },
-
-      {
-        title: "Payment",
-        dataIndex: "payment",
-        ...getColumnSearchProps("payment"),
-        
-      },
-
-      {
-        title: "Delivery-price",
-        dataIndex: "delivery price",
-        ...getColumnSearchProps("delivery price"),
-        
-      },
-
-      {
-        title: "Status",
-        dataIndex: "status",
-        ...getColumnSearchProps("status"),
-        
-      },
-      
-      {
-        title: "Tracking",
-        dataIndex: "tracking",
-        ...getColumnSearchProps("tracking"),
-        
-      },
-
-    
     ];
 
     return (
@@ -208,8 +183,8 @@ class CommandeInachévées extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des commandes"
-          subTitle="Liste des commandes"
+          title="Gestion des utilisateurs"
+          subTitle="Liste des utilisateurs"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -228,4 +203,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(CommandeInachévées);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(Role);

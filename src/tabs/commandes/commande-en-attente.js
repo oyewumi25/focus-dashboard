@@ -4,7 +4,8 @@ import React, { Component } from "react";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-
+import {base_url, getAllBackOrders} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
 
 class commandePretALivrer extends Component {
@@ -13,6 +14,20 @@ class commandePretALivrer extends Component {
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
+  };
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllBackOrders)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
   };
 
   

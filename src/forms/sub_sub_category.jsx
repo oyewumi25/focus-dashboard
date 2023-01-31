@@ -95,7 +95,7 @@ class Sub_Sub_Category extends Component {
     return (
       <>
         <Button type="primary" onClick={this.showDrawer}>
-          <PlusOutlined /> Ajouter une <sous-catgorie1></sous-catgorie1>
+          <PlusOutlined /> Ajout de categorie <sous-catgorie1></sous-catgorie1>
         </Button>
         <Drawer
           title="Ajout de pays"

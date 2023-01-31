@@ -7,6 +7,7 @@ import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 import PaysInactif_new from "../../forms/countryInactif_new ";
 import { openNotification } from "../../functions/notification";
+import { base_url, getAllCountriesInactifs} from "../../constants/url"
 
 
 
@@ -17,7 +18,20 @@ class PaysInactif extends Component {
     searchInput: React.createRef(null),
     data: []
   };
-
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllCountriesInactifs)
+      .then((res) => {
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
   
   handleReset = (clearFilters) => {
     clearFilters();

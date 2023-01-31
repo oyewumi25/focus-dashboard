@@ -3,14 +3,15 @@ import { Card, Input, Space} from "antd";
 import { DisplayButton } from "../library/Button";
 import { sessionHandler } from "../functions/sessionStore";
 import { openNotification }from "../functions/notification";
-import { keyCredential, token } from "../constants/credential";
+import { keyCredential, token,api_key } from "../constants/credential";
 import { addUserData } from "../store/action";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Helmet from 'react-helmet';
 import { UserOutlined, EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 import  {validatorConnect} from '../functions/validator-connect'
-
+import Axios from "axios";
+import { base_url,loginAdmin} from "../constants/url"
 
 
 class Login extends Component {
@@ -31,26 +32,43 @@ class Login extends Component {
 
   handleConnect = async () => {
     const { email, password } = this.state;
+    console.log(email, password);
 
-    console.log(1);
-    if (!validatorConnect(email, password)) {
-      return openNotification ("warning", "email ou mot de passe incorrect")    
-    }
-    console.log(2);
-    await this.props.saveData({
-      email: email,
-      password: password,
+    await Axios.post(
+      base_url + loginAdmin,
+      {
+        email: email.toLowerCase().trim(),
+        password,
+      },
+      {
+        headers: {
+          api_key,
+        },
+      }
+    )
+    .then((res) => {
+      console.log("Success: ", res?.data?.message);
+      const data = res.data.data;
+      // console.log(res.data);
+      this.props.saveData({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        _id: data._id,
+      });
+      sessionHandler("auth_token", res.data.auth_token, "set");
+      return setTimeout(async () => {
+        window.location.reload();
+      }, 1000);
+    })
+    .catch((err) => {
+      console.log("Error: ", err?.response?.data?.message);
+      this.setState({
+        load: false,
+      });
     });
-console.log(3);
-    await sessionHandler("auth_token", keyCredential, "set");
-    this.setState({
-      alert: true,
-      alertType: "success",
-      alertText: "Vous êtes connecté",
-    });
-  };
+  }
   render() {
-    const { alert, alertText, alertType } = this.state;
 
     if (
       sessionHandler("auth_token", null, "get") &&

@@ -3,7 +3,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-import {base_url, getAllDelivermanActif} from "../../constants/url"
+import {base_url, getAllDelivermenActifs} from "../../constants/url"
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 import LivreurActif_new from "../../forms/livreurActif_new";
@@ -11,7 +11,7 @@ import { openNotification } from "../../functions/notification";
 
   
 
-class LivreurActif extends Component {
+class delivermanActif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -24,10 +24,10 @@ class LivreurActif extends Component {
   }
   
   fetchData = async () => {
-    await Axios.get(base_url + getAllDelivermanActif)
+    await Axios.get(base_url + getAllDelivermenActifs)
       .then((res) => {
-        console.log(res.data.livreur);
-        this.setState({ data: res.data.livreur});
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
       })
       .catch((err) => {
         return openNotification("error", err?.response?.data?.message);
@@ -159,19 +159,34 @@ class LivreurActif extends Component {
       {
         title: "Nom",
         dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        ...getColumnSearchProps("firstname"),
+        render: (text) => (
+          <Tag color="orange">
+            <b>{text}</b>
+          </Tag>
+        )
       },
 
       {
         title: "Prénom",
         dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        ...getColumnSearchProps("lastname"),
+        render: (text) => (
+          <Tag color="green">
+            <b>{text}</b>
+          </Tag>
+        )
       },
       
       {
         title: "Email",
         dataIndex: "email",
-        ...getColumnSearchProps("email")
+        ...getColumnSearchProps("email"),
+        render: (text) => (
+          <Tag color="blue">
+            <b>{text}</b>
+          </Tag>
+        )
       },
 
       {
@@ -253,4 +268,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(LivreurActif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(delivermanActif);

@@ -1,14 +1,13 @@
-import { Table, PageHeader, Tag, Button, Input, Space,Dropdown,Menu } from "antd";
+import { Table, PageHeader, Tag, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import {base_url, getAllUsersInactifs} from "../../constants/url"
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
-import CommandeAchévée_new from "../../forms/commandeAchévée_new";
+import { openNotification } from "../../functions/notification";
 
-
-class CommandeAchévée extends Component {
+class userInactif extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -16,7 +15,21 @@ class CommandeAchévée extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllUsersInactifs)
+      .then((res) => {
+        console.log(res.data.utilisateurs);
+        this.setState({ data: res.data.utilisateurs});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };
+
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -140,97 +153,56 @@ class CommandeAchévée extends Component {
       },
 
       {
-        title: "Articles",
-        dataIndex: "articles",
-        ...getColumnSearchProps("articles")
+        title: "Nom",
+        dataIndex: "firstname",
+        ...getColumnSearchProps("firstname")
       },
 
       {
-        title: "User-details",
-        dataIndex: "user-details",
-        ...getColumnSearchProps("userdetails")
-      },
-
-
-      {
-        title: "Delivery-adress",
-        dataIndex: "Delivery-adress",
-        ...getColumnSearchProps("Delivery-adress")
+        title: "Prénom",
+        dataIndex: "lastname",
+        ...getColumnSearchProps("lastname")
       },
 
 
       {
-        title: "Billing-adress",
-        dataIndex: "billing-adress",
-        ...getColumnSearchProps("billing-adress"),
+        title: "Email",
+        dataIndex: "Email",
+        ...getColumnSearchProps("email")
+      },
+
+
+      {
+        title: "Numéro de téléphone",
+        dataIndex: "number",
+        ...getColumnSearchProps("number"),
+        
         
       },
 
       {
-        title: "Montant",
-        dataIndex: "montant",
-        ...getColumnSearchProps("montant"),
+        title: "Adress",
+        dataIndex: "adress",
+        ...getColumnSearchProps("adress"),
         
       },
-
-      {
-        title: "Payment",
-        dataIndex: "payment",
-        ...getColumnSearchProps("payment"),
+   
         
-      },
-
-      {
-        title: "Delivery-price",
-        dataIndex: "delivery price",
-        ...getColumnSearchProps("delivery price"),
-        
-      },
-
-      {
-        title: "Status",
-        dataIndex: "status",
-        ...getColumnSearchProps("status"),
-        
-      },
       
-      {
-        title: "Tracking",
-        dataIndex: "tracking",
-        ...getColumnSearchProps("tracking"),
-        
-      },
-      {
-        title: "",
-        dataIndex: "",
-        render: (text, record) => (
-          <Dropdown overlay={MenuButton(record)} placement="bottomCenter" arrow>
-            <Button>Options</Button>
-          </Dropdown>
-        ),
-      },
+
+      
+      
 
     
     ];
-    const MenuButton = (record) => (
-      <Menu>
-        <Menu.Item>
-          <Link onClick={() => {this.handleDelete(record._id)}}>Supprimer</Link>
-        </Menu.Item>
-      </Menu>
-    );
 
     return (
       <div style={{}}>
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des commandes"
-          subTitle="Liste des commandes"
-          tags={""}
-          extra={
-            <CommandeAchévée_new/>
-          }
+          title="Gestion des utilisateurs"
+          subTitle="Liste des utilisateurs"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -249,4 +221,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(CommandeAchévée);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(userInactif);

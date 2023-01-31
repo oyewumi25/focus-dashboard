@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import { base_url,getAllCartesActives} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
   
 
@@ -15,6 +17,20 @@ class CardActive extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllCartesActives)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };
   
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {

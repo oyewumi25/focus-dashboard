@@ -5,6 +5,7 @@ import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 import { openNotification } from "../../functions/notification";
+import { base_url, getAllRatingInactifs} from "../../constants/url"
 
 
 class ratingInactif extends Component {
@@ -14,7 +15,20 @@ class ratingInactif extends Component {
     searchInput: React.createRef(null),
     data: []
   };
-
+  componentDidMount() {
+    this.fetchData();
+  }
+  
+  fetchData = async () => {
+    await Axios.get(base_url + getAllRatingInactifs)
+      .then((res) => {
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+        return openNotification("error", err?.response?.data?.message);
+      });
+  };  
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -139,29 +153,29 @@ class ratingInactif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Comment",
+        dataIndex: "comment",
+        ...getColumnSearchProps("comment")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
-      },
-
-
-      {
-        title: "Date",
-        dataIndex: "Date",
-        ...getColumnSearchProps("Date")
+        title: "rate",
+        dataIndex: "rate",
+        ...getColumnSearchProps("rate")
       },
 
 
       {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
+        title: "Article_id",
+        dataIndex: "article_id",
+        ...getColumnSearchProps("article_id")
+      },
+
+
+      {
+        title: "User_id",
+        dataIndex: "user_id",
+        ...getColumnSearchProps("use_id"),
         render: (text) => (
           <Tag color="red">
             <b>{text}</b>

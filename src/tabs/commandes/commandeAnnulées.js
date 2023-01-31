@@ -4,9 +4,12 @@ import React, { Component } from "react";
 import Axios from "axios";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
+import {base_url, getAllCancelOrders} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
 
-class adminInactif extends Component {
+
+class commandeAnnulées extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
@@ -14,7 +17,20 @@ class adminInactif extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllCancelOrders)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };  
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     this.setState({
@@ -138,42 +154,68 @@ class adminInactif extends Component {
       },
 
       {
-        title: "Nom",
-        dataIndex: "firstname",
-        ...getColumnSearchProps("firstname")
+        title: "Articles",
+        dataIndex: "articles",
+        ...getColumnSearchProps("articles")
       },
 
       {
-        title: "Prénom",
-        dataIndex: "lastname",
-        ...getColumnSearchProps("lastname")
+        title: "User-details",
+        dataIndex: "user-details",
+        ...getColumnSearchProps("userdetails")
       },
 
 
       {
-        title: "Email",
-        dataIndex: "Email",
-        ...getColumnSearchProps("Email")
+        title: "Delivery-adress",
+        dataIndex: "Delivery-adress",
+        ...getColumnSearchProps("Delivery-adress")
       },
 
-     
+
       {
-        title: "Numéro de téléphone",
-        dataIndex: "number",
-        ...getColumnSearchProps("number"),
-        render: (text) => (
-          <Tag color="red">
-            <b>{text}</b>
-          </Tag>
-        )
+        title: "Billing-adress",
+        dataIndex: "billing-adress",
+        ...getColumnSearchProps("billing-adress"),
+        
       },
 
       {
-        title: "Password",
-        dataIndex: "Password",
-        ...getColumnSearchProps("password")
+        title: "Montant",
+        dataIndex: "montant",
+        ...getColumnSearchProps("montant"),
+        
       },
 
+      {
+        title: "Payment",
+        dataIndex: "payment",
+        ...getColumnSearchProps("payment"),
+        
+      },
+
+      {
+        title: "Delivery-price",
+        dataIndex: "delivery price",
+        ...getColumnSearchProps("delivery price"),
+        
+      },
+
+      {
+        title: "Status",
+        dataIndex: "status",
+        ...getColumnSearchProps("status"),
+        
+      },
+      
+      {
+        title: "Tracking",
+        dataIndex: "tracking",
+        ...getColumnSearchProps("tracking"),
+        
+      },
+
+    
     ];
 
     return (
@@ -181,8 +223,8 @@ class adminInactif extends Component {
         <PageHeader
           className="site-page-header"
           // onBack={() => null}
-          title="Gestion des admins"
-          subTitle="Liste des admins"
+          title="Gestion des commandes"
+          subTitle="Liste des commandes"
         >
           <Table columns={columns} dataSource={data} size="middle" />
         </PageHeader>
@@ -201,4 +243,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(adminInactif);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(commandeAnnulées);

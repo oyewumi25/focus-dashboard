@@ -6,17 +6,30 @@ import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 import Category_new from "../../forms/category_new";
+import { base_url,getAllSubCategoriesInactifs} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
-
-
-class Category extends Component {
+class subcategoryInactive extends Component {
   state = {
     searchText: "",
     searchedColumn: "",
     searchInput: React.createRef(null),
     data: []
   };
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllSubCategoriesInactifs)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };
   
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -209,4 +222,4 @@ const mapDispatchStoreToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchStoreToProps)(Category);
+export default connect(mapStateToProps, mapDispatchStoreToProps)(subcategoryInactive);

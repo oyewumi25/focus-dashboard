@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { connect } from "react-redux";
 import ArticleActif_new from "../../forms/countryActif_new";
+import { base_url,getAllArticlesActifs} from "../../constants/url"
+import { openNotification } from "../../functions/notification";
 
 
 class ArticleActif extends Component {
@@ -16,7 +18,20 @@ class ArticleActif extends Component {
     data: []
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
   
+  fetchData = async () => {
+    await Axios.get(base_url + getAllArticlesActifs)
+      .then((res) => {      
+        console.log(res.data.data);
+        this.setState({ data: res.data.data});
+      })
+      .catch((err) => {
+      return openNotification("error", err?.response?.data?.message);
+      });
+  };
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
